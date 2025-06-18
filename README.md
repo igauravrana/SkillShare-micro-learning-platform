@@ -20,8 +20,8 @@ SkillShare is a MERN stack-based micro-learning platform where users can:
 
 ### 🔁 Clone the Repo
 ```bash
-git clone https://github.com/your-username/SkillShare-MERN.git
-cd SkillShare-MERN
+git clone https://github.com/your-username/SkillShare-micro-learning-platform.git
+cd SkillShare-micro-learning-platform
 ```
 
 ### 🔧 1. Setup Backend

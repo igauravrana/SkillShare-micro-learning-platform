@@ -1,63 +1,86 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import '../styles/TutorialDetails.css';
+import React, { useState, useEffect } from 'react';
+import CommentBox from './CommentBox';
 
-const TutorialDetails = ({ tutorialId }) => {
-  const [tutorial, setTutorial] = useState(null);
-  const [comment, setComment] = useState('');
+const TutorialDetails = ({ tutorial, onBack }) => {
+  const [tutorialData, setTutorialData] = useState(tutorial);
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    const fetchTutorial = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/tutorials/${tutorialId}`);
-        setTutorial(res.data);
-        setComments(res.data.comments || []);
-      } catch (err) {
-        console.error('Error fetching tutorial details:', err);
-      }
-    };
+    fetchTutorialDetails();
+  }, [tutorial._id]);
 
-    fetchTutorial();
-  }, [tutorialId]);
-
-  const handleCommentSubmit = async () => {
-    if (!comment.trim()) return;
-
+  const fetchTutorialDetails = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/tutorials/${tutorialId}/comment`, { text: comment });
-      setComments([...comments, { text: comment }]);
-      setComment('');
-    } catch (err) {
-      console.error('Error adding comment:', err);
+      const response = await fetch(`http://localhost:5000/api/tutorials/${tutorial._id}`);
+      const data = await response.json();
+      setTutorialData(data.tutorial);
+      setComments(data.comments);
+    } catch (error) {
+      console.error('Error fetching tutorial details:', error);
     }
   };
 
-  if (!tutorial) return <p>Loading tutorial...</p>;
+  const handleLike = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/tutorials/${tutorial._id}/like`, {
+        method: 'PUT'
+      });
+      const updatedTutorial = await response.json();
+      setTutorialData(updatedTutorial);
+    } catch (error) {
+      console.error('Error liking tutorial:', error);
+    }
+  };
+
+  const getVideoId = (url) => {
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
+
+  const videoId = getVideoId(tutorialData.videoURL);
 
   return (
     <div className="tutorial-details">
-      <h3>{tutorial.title}</h3>
-      <p><strong>Author:</strong> {tutorial.author}</p>
-      <p><strong>Category:</strong> {tutorial.category}</p>
-      <p>{tutorial.description}</p>
-      <a href={tutorial.videoURL} target="_blank" rel="noopener noreferrer">📺 Watch Video</a>
+      <button onClick={onBack} className="back-btn">← Back to Tutorials</button>
       
-      <div className="comment-box">
-        <input
-          type="text"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="Add a comment"
-        />
-        <button onClick={handleCommentSubmit}>💬 Comment</button>
-      </div>
+      <div className="tutorial-content">
+        <h1>{tutorialData.title}</h1>
+        <div className="tutorial-info">
+          <span><strong>Author:</strong> {tutorialData.author}</span>
+          <span><strong>Category:</strong> {tutorialData.category}</span>
+          <span><strong>Published:</strong> {new Date(tutorialData.createdAt).toLocaleDateString()}</span>
+        </div>
 
-      <ul className="comments-list">
-        {comments.map((c, index) => (
-          <li key={index}>{c.text}</li>
-        ))}
-      </ul>
+        {videoId && (
+          <div className="video-container">
+            <iframe
+              width="100%"
+              height="400"
+              src={`https://www.youtube.com/embed/${videoId}`}
+              title={tutorialData.title}
+              frameBorder="0"
+              allowFullScreen
+            />
+          </div>
+        )}
+
+        <div className="tutorial-description">
+          <p>{tutorialData.description}</p>
+        </div>
+
+        <div className="tutorial-actions">
+          <button onClick={handleLike} className="like-btn">
+            ❤️ Like ({tutorialData.likes})
+          </button>
+        </div>
+
+        <CommentBox 
+          tutorialId={tutorial._id}
+          comments={comments}
+          onCommentAdded={fetchTutorialDetails}
+        />
+      </div>
     </div>
   );
 };

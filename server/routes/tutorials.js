@@ -1,82 +1,65 @@
 const express = require('express');
-const router = express.Router();
 const Tutorial = require('../models/Tutorial');
 const Comment = require('../models/Comment');
+const router = express.Router();
 
-// 1. POST /api/tutorials - Add new tutorial
-router.post('/', async (req, res) => {
-  try {
-    const { title, author, category, description, videoURL } = req.body;
-    const newTutorial = new Tutorial({ title, author, category, description, videoURL });
-    const saved = await newTutorial.save();
-    res.status(201).json(saved);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to create tutorial' });
-  }
-});
-
-// 2. GET /api/tutorials - List all tutorials
+// Get all tutorials
 router.get('/', async (req, res) => {
   try {
     const tutorials = await Tutorial.find().sort({ createdAt: -1 });
     res.json(tutorials);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch tutorials' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
-// 3. GET /api/tutorials/:id - Get tutorial by ID
+// Get single tutorial
 router.get('/:id', async (req, res) => {
   try {
     const tutorial = await Tutorial.findById(req.params.id);
-    if (!tutorial) return res.status(404).json({ error: 'Tutorial not found' });
-    res.json(tutorial);
-  } catch (err) {
-    res.status(500).json({ error: 'Error retrieving tutorial' });
+    const comments = await Comment.find({ tutorialId: req.params.id }).sort({ commentedAt: -1 });
+    res.json({ tutorial, comments });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
-// 4. POST /api/tutorials/:id/like - Like a tutorial
-router.post('/:id/like', async (req, res) => {
+// Create tutorial
+router.post('/', async (req, res) => {
   try {
-    const tutorial = await Tutorial.findById(req.params.id);
-    if (!tutorial) return res.status(404).json({ error: 'Tutorial not found' });
-
-    tutorial.likes += 1;
-    await tutorial.save();
-    res.json({ likes: tutorial.likes });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to like tutorial' });
+    const tutorial = new Tutorial(req.body);
+    const savedTutorial = await tutorial.save();
+    res.status(201).json(savedTutorial);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 });
 
-// 5. POST /api/tutorials/:id/comment - Comment on a tutorial
+// Like tutorial
+router.put('/:id/like', async (req, res) => {
+  try {
+    const tutorial = await Tutorial.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { likes: 1 } },
+      { new: true }
+    );
+    res.json(tutorial);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Add comment
 router.post('/:id/comments', async (req, res) => {
   try {
-    const tutorial = await Tutorial.findById(req.params.id);
-    if (!tutorial) return res.status(404).json({ error: 'Tutorial not found' });
-
-    const comment = {
-      text: req.body.text,
-      createdAt: new Date(),
-    };
-
-    tutorial.comments.push(comment);
-    await tutorial.save();
-
-    res.status(201).json(comment);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to add comment' });
-  }
-});
-
-// 6. GET /api/tutorials/:id/comments - Get comments for a tutorial
-router.get('/:id/comments', async (req, res) => {
-  try {
-    const comments = await Comment.find({ tutorialId: req.params.id }).sort({ commentedAt: -1 });
-    res.json(comments);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch comments' });
+    const comment = new Comment({
+      tutorialId: req.params.id,
+      ...req.body
+    });
+    const savedComment = await comment.save();
+    res.status(201).json(savedComment);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 });
 

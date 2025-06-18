@@ -1,0 +1,235 @@
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+nav button {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+nav button:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* Tutorial Form */
+.tutorial-form {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.tutorial-form h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.tutorial-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.tutorial-form input,
+.tutorial-form select,
+.tutorial-form textarea {
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.tutorial-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.tutorial-form button {
+  background: #667eea;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.tutorial-form button:hover {
+  background: #5a6fd8;
+}
+
+/* Tutorial List */
+.tutorial-list h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.tutorials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.tutorial-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.tutorial-card:hover {
+  transform: translateY(-5px);
+}
+
+.tutorial-card h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.tutorial-card p {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.tutorial-meta {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.tutorial-card button {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Tutorial Details */
+.tutorial-details {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.back-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.tutorial-content h1 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.tutorial-info {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.video-container {
+  margin: 20px 0;
+}
+
+.tutorial-description {
+  margin: 20px 0;
+  line-height: 1.6;
+}
+
+.like-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+/* Comments */
+.comment-box h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.comment-form {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.comment-form input,
+.comment-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.comment-form button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.comment {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.comment-header strong {
+  color: #333;
+}
+
+.comment-header span {
+  color: #888;
+  font-size: 12px;
+}

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import '../styles/TutorialForm.css';
 
-const TutorialForm = () => {
+const TutorialForm = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
     title: '',
     author: '',
@@ -11,71 +9,77 @@ const TutorialForm = () => {
     videoURL: ''
   });
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/api/tutorials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (response.ok) {
+        onSuccess();
+        setFormData({ title: '', author: '', category: '', description: '', videoURL: '' });
+      }
+    } catch (error) {
+      console.error('Error creating tutorial:', error);
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('http://localhost:5000/api/tutorials', formData);
-      alert('Tutorial created!');
-      setFormData({
-        title: '',
-        author: '',
-        category: '',
-        description: '',
-        videoURL: ''
-      });
-    } catch (error) {
-      alert('Error creating tutorial');
-    }
-  };
-
   return (
-    <form className="tutorial-form" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="title"
-        placeholder="Title"
-        value={formData.title}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="author"
-        placeholder="Author"
-        value={formData.author}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="category"
-        placeholder="Category"
-        value={formData.category}
-        onChange={handleChange}
-        required
-      />
-      <textarea
-        name="description"
-        placeholder="Description"
-        value={formData.description}
-        onChange={handleChange}
-        rows={4}
-        required
-      ></textarea>
-      <input
-        type="url"
-        name="videoURL"
-        placeholder="YouTube Video URL"
-        value={formData.videoURL}
-        onChange={handleChange}
-        required
-      />
-      <button type="submit">Submit Tutorial</button>
-    </form>
+    <div className="tutorial-form">
+      <h2>Add New Tutorial</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="title"
+          placeholder="Tutorial Title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="author"
+          placeholder="Author Name"
+          value={formData.author}
+          onChange={handleChange}
+          required
+        />
+        <select
+          name="category"
+          value={formData.category}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select Category</option>
+          <option value="Frontend">Frontend</option>
+          <option value="Backend">Backend</option>
+          <option value="Database">Database</option>
+          <option value="DevOps">DevOps</option>
+        </select>
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={formData.description}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="url"
+          name="videoURL"
+          placeholder="Video URL"
+          value={formData.videoURL}
+          onChange={handleChange}
+          required
+        />
+        <button type="submit">Add Tutorial</button>
+      </form>
+    </div>
   );
 };
 
