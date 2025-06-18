@@ -1,0 +1,43 @@
+.tutorial-list {
+  margin-bottom: 30px;
+}
+
+.tutorial-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tutorial-card h3 {
+  margin: 0 0 10px;
+  color: #333;
+}
+
+.tutorial-card p {
+  margin: 4px 0;
+  color: #555;
+}
+
+.tutorial-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.tutorial-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: white;
+  background-color: #28a745;
+}
+
+.tutorial-actions button:hover {
+  background-color: #218838;
+}
