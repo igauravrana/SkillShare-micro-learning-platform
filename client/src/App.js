@@ -1,51 +1,76 @@
 import React, { useState } from 'react';
-import TutorialForm from './components/TutorialForm';
-import TutorialList from './components/TutorialList';
+import Home from './components/Home';
 import TutorialDetails from './components/TutorialDetails';
+import Login from './components/Login';      // 🔧 We'll create this
+import Signup from './components/Signup';    // 🔧 We'll create this
+import InstructorPanel from './components/InstructorPanel'; // 🔧 We'll create this
 import './App.css';
 
 function App() {
-  const [view, setView] = useState('list');
+  const [view, setView] = useState('home');
   const [selectedTutorial, setSelectedTutorial] = useState(null);
   const [refresh, setRefresh] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track auth status
 
   const handleViewTutorial = (tutorial) => {
+    if (!isLoggedIn) {
+      setView('login');
+      return;
+    }
     setSelectedTutorial(tutorial);
     setView('details');
   };
 
-  const handleRefresh = () => setRefresh(prev => prev + 1);
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setView('home');
+  };
 
   return (
     <div className="App">
       <header>
-        <h1>SkillShare</h1>
+        <h1 style={{ cursor: 'pointer' }} onClick={() => setView('home')}>
+          SkillShare
+        </h1>
         <nav>
-          <button onClick={() => setView('list')}>All Tutorials</button>
-          <button onClick={() => setView('form')}>Add Tutorial</button>
+          {!isLoggedIn ? (
+            <>
+              <button onClick={() => setView('login')}>Login</button>
+              <button onClick={() => setView('signup')}>Sign Up</button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => setView('instructor')}>Instructor</button>
+              <button onClick={handleLogout}>Logout</button>
+            </>
+          )}
         </nav>
       </header>
 
       <main>
-        {view === 'list' && (
-          <TutorialList 
-            onViewTutorial={handleViewTutorial} 
-            refresh={refresh}
-          />
-        )}
-        {view === 'form' && (
-          <TutorialForm 
-            onSuccess={() => {
-              setView('list');
-              handleRefresh();
-            }}
-          />
+        {view === 'home' && (
+          <Home onCardClick={handleViewTutorial} />
         )}
         {view === 'details' && selectedTutorial && (
-          <TutorialDetails 
+          <TutorialDetails
             tutorial={selectedTutorial}
-            onBack={() => setView('list')}
+            onBack={() => setView('home')}
           />
+        )}
+        {view === 'login' && (
+          <Login onLoginSuccess={() => {
+            setIsLoggedIn(true);
+            setView('home');
+          }} />
+        )}
+        {view === 'signup' && (
+          <Signup onSignupSuccess={() => {
+            setIsLoggedIn(true);
+            setView('home');
+          }} />
+        )}
+        {view === 'instructor' && (
+          <InstructorPanel onSuccess={() => setRefresh(prev => prev + 1)} />
         )}
       </main>
     </div>

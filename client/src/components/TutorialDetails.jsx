@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react';
 import CommentBox from './CommentBox';
 
 const TutorialDetails = ({ tutorial, onBack }) => {
-  const [tutorialData, setTutorialData] = useState(tutorial);
+  const [tutorialData, setTutorialData] = useState(tutorial || null);
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
+    if (!tutorial?._id) return; // Prevent crash on undefined
     fetchTutorialDetails();
-  }, [tutorial._id]);
+  }, [tutorial?._id]);
 
   const fetchTutorialDetails = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/tutorials/${tutorial._id}`);
       const data = await response.json();
-      setTutorialData(data.tutorial);
-      setComments(data.comments);
+      setTutorialData(data.tutorial || tutorial); // fallback to original
+      setComments(data.comments || []);
     } catch (error) {
       console.error('Error fetching tutorial details:', error);
     }
@@ -33,12 +34,22 @@ const TutorialDetails = ({ tutorial, onBack }) => {
   };
 
   const getVideoId = (url) => {
+    if (!url) return null;
     const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
     const match = url.match(regex);
     return match ? match[1] : null;
   };
 
-  const videoId = getVideoId(tutorialData.videoURL);
+  if (!tutorialData) {
+    return (
+      <div className="tutorial-details">
+        <p style={{ color: 'red' }}>Tutorial not found or loading...</p>
+        <button onClick={onBack}>← Back</button>
+      </div>
+    );
+  }
+
+  const videoId = getVideoId(tutorialData.videoUrl || tutorialData.videoURL); // handle both camelCase or lowercase
 
   return (
     <div className="tutorial-details">
@@ -47,12 +58,14 @@ const TutorialDetails = ({ tutorial, onBack }) => {
       <div className="tutorial-content">
         <h1>{tutorialData.title}</h1>
         <div className="tutorial-info">
-          <span><strong>Author:</strong> {tutorialData.author}</span>
-          <span><strong>Category:</strong> {tutorialData.category}</span>
-          <span><strong>Published:</strong> {new Date(tutorialData.createdAt).toLocaleDateString()}</span>
+          {tutorialData.author && <span><strong>Author:</strong> {tutorialData.author}</span>}
+          {tutorialData.category && <span><strong>Category:</strong> {tutorialData.category}</span>}
+          {tutorialData.createdAt && (
+            <span><strong>Published:</strong> {new Date(tutorialData.createdAt).toLocaleDateString()}</span>
+          )}
         </div>
 
-        {videoId && (
+        {videoId ? (
           <div className="video-container">
             <iframe
               width="100%"
@@ -63,6 +76,8 @@ const TutorialDetails = ({ tutorial, onBack }) => {
               allowFullScreen
             />
           </div>
+        ) : (
+          <p style={{ color: 'red' }}>No video available for this tutorial.</p>
         )}
 
         <div className="tutorial-description">
@@ -71,7 +86,7 @@ const TutorialDetails = ({ tutorial, onBack }) => {
 
         <div className="tutorial-actions">
           <button onClick={handleLike} className="like-btn">
-            ❤️ Like ({tutorialData.likes})
+            ❤️ Like ({tutorialData.likes || 0})
           </button>
         </div>
 
