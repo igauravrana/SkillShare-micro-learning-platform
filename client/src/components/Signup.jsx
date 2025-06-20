@@ -1,25 +1,4 @@
 // src/components/Signup.jsx
-<<<<<<< HEAD
-import React from 'react';
-import { auth, provider, signInWithPopup } from '../firebase';
-
-const Signup = ({ onSignupSuccess }) => {
-  const handleSignup = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log('Signed up as:', user.displayName);
-      onSignupSuccess(user); // notify App.js
-    } catch (err) {
-      console.error('Signup failed:', err);
-    }
-  };
-
-  return (
-    <div style={{ textAlign: 'center', padding: '2rem' }}>
-      <h2>Sign Up to SkillShare</h2>
-      <button onClick={handleSignup}>Sign up with Google</button>
-=======
 import React, { useState } from 'react';
 import { auth, provider, signInWithPopup } from '../firebase';
 import './Signup.css';
@@ -32,7 +11,7 @@ const Signup = ({ onSignupSuccess }) => {
   const handleGoogleSignup = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      onSignupSuccess(result.user);
+      onSignupSuccess(user); 
     } catch (err) {
       console.error('Google signup failed:', err);
     }
@@ -93,7 +72,6 @@ const Signup = ({ onSignupSuccess }) => {
           Already have an account? <a href="#">Log in</a>
         </div>
       </div>
->>>>>>> 8c5ceac (Updated full project with changes)
     </div>
   );
 };

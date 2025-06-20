@@ -5,14 +5,12 @@ const TutorialSchema = new mongoose.Schema({
   description: { type: String, required: true },
   videoUrl: { type: String, required: true },
   tags: [String],
-<<<<<<< HEAD
-  banner: { type: String, required: true }, // ✅ Add this line for banner image
-  likes: { type: Number, default: 0 },
-=======
+  author: { type: String, required: true },
   banner: { type: String, required: true },
   likes: { type: Number, default: 0 },
-  likedBy: [{ type: String }], 
->>>>>>> 8c5ceac (Updated full project with changes)
+  likedBy: {
+  type: [String],
+  default: []},
   createdAt: { type: Date, default: Date.now }
 });
 

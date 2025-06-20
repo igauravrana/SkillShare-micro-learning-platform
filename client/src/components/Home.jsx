@@ -20,7 +20,6 @@ const Home = ({ onCardClick }) => {
     fetchTutorials();
   }, []);
 
-  // 🔁 Fallback image selector for seed/default tutorials
   const getImageForTitle = (title) => {
     const lower = title.toLowerCase();
     if (lower.includes('database')) return '/Database.png';
@@ -31,27 +30,45 @@ const Home = ({ onCardClick }) => {
 
   return (
     <div className="home-container">
-      {tutorials.length === 0 ? (
-        <p style={{ textAlign: 'center' }}>No tutorials found.</p>
-      ) : (
-        tutorials.map((tutorial, index) => (
-          <div className="course-card" key={index} onClick={() => onCardClick(tutorial)}>
-            <img
-              src={tutorial.banner ? tutorial.banner : getImageForTitle(tutorial.title)} // ✅ Use instructor banner if available
-              alt={tutorial.title}
-              className="course-image"
-              onError={(e) => { e.target.src = '/default.png'; }}
-            />
-            <h3 className="course-title">{tutorial.title}</h3>
-            <p className="course-description">{tutorial.description}</p>
-            <div className="course-info">
-              <span>⭐ {(Math.random() * 2 + 3).toFixed(1)}</span>
-              <span>{Math.floor(Math.random() * 500) + 100} ratings</span>
-              <span>{(Math.random() * 100).toFixed(1)} total hours</span>
+      <div className="full-banner">
+        <img src="/frontbanner1.JPEG" alt="Banner" className="banner-image" />
+      </div>
+
+      <h2 className="courses-heading">Our Courses</h2>
+
+      <div className="courses-grid">
+        {tutorials.length === 0 ? (
+          <p style={{ textAlign: 'center' }}>No tutorials found.</p>
+        ) : (
+          tutorials.map((tutorial, index) => (
+            <div
+              className="course-card"
+              key={index}
+              onClick={() => onCardClick(tutorial)}
+            >
+              <img
+                src={
+                  tutorial.banner
+                    ? tutorial.banner
+                    : getImageForTitle(tutorial.title)
+                }
+                alt={tutorial.title}
+                className="course-image"
+                onError={(e) => {
+                  e.target.src = '/default.png';
+                }}
+              />
+              <h3 className="course-title">{tutorial.title}</h3>
+              <p className="course-description">{tutorial.description}</p>
+              <div className="course-info">
+                <span>⭐ {(Math.random() * 2 + 3).toFixed(1)}</span>
+                <span>{Math.floor(Math.random() * 500) + 100} ratings</span>
+                <span>{(Math.random() * 100).toFixed(1)} total hours</span>
+              </div>
             </div>
-          </div>
-        ))
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 };

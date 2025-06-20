@@ -33,7 +33,7 @@ const TutorialList = ({ onViewTutorial, refresh }) => {
             <p><strong>Category:</strong> {tutorial.category}</p>
             <p>{tutorial.description}</p>
             <div className="tutorial-meta">
-              <span>❤️ {tutorial.likes}</span>
+              <span>❤ {tutorial.likes}</span>
               <span>{new Date(tutorial.createdAt).toLocaleDateString()}</span>
             </div>
             <button onClick={() => onViewTutorial(tutorial)}>

@@ -1,26 +1,53 @@
 .home-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  padding: 40px;
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Banner styles */
+.full-banner {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.banner-image {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Heading */
+.courses-heading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 30px 0 20px;
+  color: #333;
+}
+
+/* Grid for course cards */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 3 per row on large, responsive */
+  gap: 20px;
+}
+
+/* Card styles */
 .course-card {
   background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   overflow: hidden;
-  cursor: pointer;
   transition: transform 0.2s ease;
   display: flex;
   flex-direction: column;
-  height: 380px; /* reduced height */
 }
 
 .course-card:hover {
-  transform: scale(1.02);
+  transform: translateY(-5px);
 }
 
 .course-image {
