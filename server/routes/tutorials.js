@@ -37,18 +37,49 @@ router.post('/', async (req, res) => {
 
 // Like tutorial
 router.put('/:id/like', async (req, res) => {
+<<<<<<< HEAD
   try {
     const tutorial = await Tutorial.findByIdAndUpdate(
       req.params.id,
       { $inc: { likes: 1 } },
       { new: true }
     );
+=======
+  const learnerId = req.body.learnerId; // Make sure this is sent in the request
+
+  if (!learnerId) {
+    return res.status(400).json({ message: "Learner ID is required" });
+  }
+
+  try {
+    const tutorial = await Tutorial.findById(req.params.id);
+
+    if (!tutorial) {
+      return res.status(404).json({ message: "Tutorial not found" });
+    }
+
+    // Check if the learner already liked the tutorial
+    if (tutorial.likedBy.includes(learnerId)) {
+      return res.status(400).json({ message: "You have already liked this tutorial" });
+    }
+
+    // Add like and learner ID
+    tutorial.likes += 1;
+    tutorial.likedBy.push(learnerId);
+
+    await tutorial.save();
+
+>>>>>>> 8c5ceac (Updated full project with changes)
     res.json(tutorial);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8c5ceac (Updated full project with changes)
 // Add comment
 router.post('/:id/comments', async (req, res) => {
   try {
