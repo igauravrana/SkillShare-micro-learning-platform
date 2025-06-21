@@ -58,6 +58,10 @@ Output:
 cd ../client
 npm install
 ```
+### Then install Firebase in root directory:
+```bash
+npm install firebase
+```
 
 #### Start React App
 ```bash
