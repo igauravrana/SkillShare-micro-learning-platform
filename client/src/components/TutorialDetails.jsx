@@ -172,7 +172,7 @@ const TutorialDetails = ({ tutorial, onBack, user }) => {
         <p>{tutorialData.description}</p>
       </div>
 
-      <div style={{ marginBottom: "2rem" }}>
+      {/* <div style={{ marginBottom: "2rem" }}>
         <button
           onClick={handleLike}
           className="like-btn"
@@ -188,7 +188,7 @@ const TutorialDetails = ({ tutorial, onBack, user }) => {
         >
           ❤️ Like ({tutorialData.likes || 0})
         </button>
-      </div>
+      </div> */}
 
       <CommentBox
         tutorialId={tutorial._id}

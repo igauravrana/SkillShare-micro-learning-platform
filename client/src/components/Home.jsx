@@ -29,7 +29,7 @@ const Home = ({ onCardClick, searchTerm }) => {
     if (lower.includes("database")) return "/Database.png";
     if (lower.includes("devops")) return "/Devops.png";
     if (lower.includes("backend")) return "/Backend.png";
-    return "https://source.unsplash.com/500x300/?learning";
+    return "https://picsum.photos/500/300";
   };
 
   return (
