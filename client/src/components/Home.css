@@ -1,0 +1,80 @@
+.home-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Banner styles */
+.full-banner {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.banner-image {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Heading */
+.courses-heading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 30px 0 20px;
+  color: #333;
+}
+
+/* Grid for course cards */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 3 per row on large, responsive */
+  gap: 20px;
+}
+
+/* Card styles */
+.course-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+}
+
+.course-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background-color: #ddd;
+}
+
+.course-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 10px 16px 4px;
+  color: #222;
+}
+
+.course-description {
+  margin: 0 16px 10px;
+  font-size: 0.9rem;
+  color: #555;
+  flex-grow: 1;
+}
+
+.course-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px 12px;
+  font-size: 0.8rem;
+  color: #888;
+}
